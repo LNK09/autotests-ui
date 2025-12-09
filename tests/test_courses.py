@@ -4,49 +4,20 @@ import pytest
 
 @pytest.mark.courses
 @pytest.mark.regression
-def test_empty_courses_list():
-    with sync_playwright() as playwright:
-        browser = playwright.chromium.launch(headless=False)
-        context = browser.new_context()
-        page = context.new_page()
+def test_empty_courses_list(chromium_page_with_state):
+    chromium_page_with_state.goto('https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/courses')
 
-        page.goto('https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/auth/registration')
+    courses_title = chromium_page_with_state.get_by_test_id('courses-list-toolbar-title-text')
+    expect(courses_title).to_be_visible()
+    expect(courses_title).to_have_text('Courses')
 
-        email_reg_input = page.get_by_test_id('registration-form-email-input').locator('input')
-        email_reg_input.fill('user.name@gmail.com')
+    empty_block_icon = chromium_page_with_state.get_by_test_id('courses-list-empty-view-icon')
+    expect(empty_block_icon).to_be_visible()
 
-        username_reg_input = page.get_by_test_id('registration-form-username-input').locator('input')
-        username_reg_input.fill('username')
+    empty_block_title = chromium_page_with_state.get_by_test_id('courses-list-empty-view-title-text')
+    expect(empty_block_title).to_be_visible()
+    expect(empty_block_title).to_have_text('There is no results')
 
-        password_reg_input = page.get_by_test_id('registration-form-password-input').locator('input')
-        password_reg_input.fill('password')
-
-        reg_button = page.get_by_test_id('registration-page-registration-button')
-        reg_button.click()
-
-        dashboard_title = page.get_by_test_id('dashboard-toolbar-title-text')
-        expect(dashboard_title).to_be_visible()
-
-        context.storage_state(path='browser-state.json')
-
-    with sync_playwright() as playwright:
-        browser = playwright.chromium.launch(headless=False)
-        context = browser.new_context(storage_state='browser-state.json')
-        page = context.new_page()
-
-        page.goto('https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/courses')
-
-        courses_title = page.get_by_test_id('courses-list-toolbar-title-text')
-        expect(courses_title).to_be_visible()
-        expect(courses_title).to_have_text('Courses')
-
-        empty_block_icon = page.get_by_test_id('courses-list-empty-view-icon')
-        expect(empty_block_icon).to_be_visible()
-
-        empty_block_title = page.get_by_test_id('courses-list-empty-view-title-text')
-        expect(empty_block_title).to_be_visible()
-        expect(empty_block_title).to_have_text('There is no results')
-
-        empty_block_description = page.get_by_test_id('courses-list-empty-view-description-text')
-        expect(empty_block_description).to_be_visible()
-        expect(empty_block_description).to_have_text('Results from the load test pipeline will be displayed here')
+    empty_block_description = chromium_page_with_state.get_by_test_id('courses-list-empty-view-description-text')
+    expect(empty_block_description).to_be_visible()
+    expect(empty_block_description).to_have_text('Results from the load test pipeline will be displayed here')
