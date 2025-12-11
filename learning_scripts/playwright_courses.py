@@ -22,7 +22,7 @@ with sync_playwright() as playwright:
     dashboard_title = page.get_by_test_id('dashboard-toolbar-title-text')
     expect(dashboard_title).to_be_visible()
 
-    context.storage_state(path='browser-state.json')
+    context.storage_state(path='../browser-state.json')
 
 with sync_playwright() as playwright:
     browser = playwright.chromium.launch(headless=False)

@@ -20,7 +20,7 @@ with sync_playwright() as playwright:
     reg_button = page.get_by_test_id('registration-page-registration-button')
     reg_button.click()
 
-    context.storage_state(path='browser-state.json')
+    context.storage_state(path='../browser-state.json')
 
     # expect(page.get_by_test_id('dashboard-toolbar-title-text')).to_be_visible()
     # expect(page.get_by_test_id('dashboard-toolbar-title-text')).to_have_text('Dashboard')
